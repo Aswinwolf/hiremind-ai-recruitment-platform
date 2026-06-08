@@ -1,0 +1,32 @@
+{
+  "summary": "Comprehensive backend testing for HireMind AI (standalone MERN scaffold at /app/hiremind-ai/). Tested Node API on localhost:5000 and Python Flask parser on localhost:5001 directly. All 31 pytest tests passed across health, auth (register/login/refresh/logout + password policy + duplicate), auth gates (7 protected routes), roles (seed idempotent, RBAC), parser (validation + sample PDF), candidate flow (select-role → upload-resume → calculate-ats), and rate limit sanity. Refresh token rotation and revocation verified end-to-end. ",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/hiremind-ai/server/tests/test_hiremind_backend.py",
+    "/app/test_reports/pytest/hiremind_backend.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "auth.js login returns 404 for unknown email — leaks user enumeration. Recommend returning a generic 400 'Invalid credentials' for both unknown email and wrong password (security best practice).",
+    "Refresh cookie uses sameSite:'lax' and secure only in production — acceptable for local dev but ensure production deploys set NODE_ENV=production so secure flag is enabled.",
+    "No brute-force lockout observed on auth routes (only generic rate limiter). Consider adding per-account lockout after N failed logins as called out in the playbook.",
+    "candidate.js upload-resume stores absolute filesystem path in candidate.resumePath — consider storing object-storage key or relative path for portability across containers.",
+    "roles.js POST /seed has no auth — anyone can hit it. Idempotent so low risk, but consider gating behind admin role or environment-only access."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100% (31/31)", "frontend": "not tested (per request)"},
+  "test_credentials": "test@hiremind.local / StrongP@ss123! (candidate). Verified working.",
+  "seed_data_creation": "Used existing seeded test user and existing /tmp/test_resume.pdf. Test also registers ephemeral users with unique emails (newuser_<uuid>@hiremind.local) which remain in DB.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend & parser fully verified. Server runs on localhost:5000, parser on 5001. Test file is at /app/hiremind-ai/server/tests/test_hiremind_backend.py and uses pytest. If services aren't running: cd /app/hiremind-ai/server && nohup node index.js > /tmp/hiremind-server.log 2>&1 &  and  cd /app/hiremind-ai/parser && nohup python3 app.py > /tmp/hiremind-parser.log 2>&1 &. Interview/HR/Admin/Analytics endpoints only checked for auth gate; deep functional testing skipped because Gemini key is a placeholder (per agent_to_agent_context_note).",
+  "rca of the issue": "N/A — no issues encountered."
+}
