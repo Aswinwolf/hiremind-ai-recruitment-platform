@@ -11,7 +11,7 @@ const DEFAULT_ROLES = [
   { title: "AI Engineer",       requiredSkills: ["Python", "LangChain", "LLM", "PyTorch", "FastAPI", "NLP"] },
 ];
 
-router.post("/seed", async (_req, res) => {
+router.post("/seed", auth, requireRole("admin"), async (_req, res) => {
   for (const r of DEFAULT_ROLES) {
     await Role.updateOne({ title: r.title }, { $setOnInsert: r }, { upsert: true });
   }
