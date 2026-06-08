@@ -1,0 +1,38 @@
+version: "3.9"
+services:
+  mongo:
+    image: mongo:7
+    ports: ["27017:27017"]
+    volumes: [mongo-data:/data/db]
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+    restart: unless-stopped
+
+  parser:
+    build: ../parser
+    ports: ["5001:5001"]
+    env_file: ../parser/.env
+    restart: unless-stopped
+
+  server:
+    build: ../server
+    ports: ["5000:5000"]
+    env_file: ../server/.env
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/hiremind
+      - REDIS_URL=redis://redis:6379
+      - PARSER_URL=http://parser:5001
+    depends_on: [mongo, redis, parser]
+    restart: unless-stopped
+
+  client:
+    build: ../client
+    ports: ["3000:80"]
+    depends_on: [server]
+    restart: unless-stopped
+
+volumes:
+  mongo-data:

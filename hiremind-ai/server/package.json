@@ -1,0 +1,43 @@
+{
+  "name": "hiremind-server",
+  "version": "1.0.0",
+  "description": "HireMind AI — Express API + Gemini 2.5 Flash + MongoDB",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "seed:roles": "node scripts/seedRoles.js",
+    "db:indexes": "node scripts/createIndexes.js",
+    "lint": "eslint .",
+    "test": "echo \"no tests yet\" && exit 0"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "bcryptjs": "^2.4.3",
+    "bullmq": "^5.10.4",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^7.4.0",
+    "helmet": "^7.1.0",
+    "ioredis": "^5.4.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.5.0",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "pdfkit": "^0.15.0",
+    "winston": "^3.13.0",
+    "xss": "^1.0.15",
+    "zxcvbn": "^4.4.2",
+    "axios": "^1.7.2"
+  },
+  "devDependencies": {
+    "eslint": "^9.6.0",
+    "nodemon": "^3.1.4"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
