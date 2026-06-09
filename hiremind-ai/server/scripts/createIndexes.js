@@ -50,6 +50,12 @@ async function safeCreate(coll, specs) {
     { key: { at: 1 }, name: "ttl_at", expireAfterSeconds: 60 * 60 * 24 * 180 },
   ]);
 
+  await safeCreate(db.collection("assessments"), [
+    { key: { userId: 1, status: 1 }, name: "user_status" },
+    { key: { interviewId: 1 }, unique: true, name: "uniq_interviewId" },
+    { key: { completedAt: -1 }, name: "completedAt" },
+  ]);
+
   await safeCreate(db.collection("refreshtokens"), [
     { key: { tokenHash: 1 }, unique: true, name: "uniq_tokenHash" },
     { key: { userId: 1, expiresAt: -1 }, name: "user_expires" },

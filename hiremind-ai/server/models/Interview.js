@@ -23,7 +23,7 @@ const interviewSchema = new mongoose.Schema({
   userId:       { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   selectedRole: String,
   questions:    [questionSchema],
-  status:       { type: String, enum: ["in-progress", "completed", "abandoned"], default: "in-progress" },
+  status:       { type: String, enum: ["in-progress", "assessment-pending", "assessment-in-progress", "completed", "abandoned"], default: "in-progress" },
 
   progress: {
     currentIndex:    { type: Number, default: 0 },
@@ -63,13 +63,17 @@ const interviewSchema = new mongoose.Schema({
   },
 
   finalScores: {
-    atsScore:        Number,
-    technicalScore:  Number,
-    behavioralScore: Number,
-    commScore:       Number,
-    finalScore:      Number,
+    atsScore:                 Number,
+    technicalScore:           Number,
+    behavioralScore:          Number,
+    commScore:                Number,
+    workplaceReadinessScore:  Number,
+    finalScore:               Number,
   },
-  recommendation: { type: String, enum: ["Highly Recommended", "Recommended", "Needs Improvement"] },
+  recommendation: {
+    type: String,
+    enum: ["Highly Recommended", "Recommended", "Consider with Training", "Not Recommended", "Needs Improvement"],
+  },
   decisionBrief: {
     strengths:             [String],
     weaknesses:            [String],

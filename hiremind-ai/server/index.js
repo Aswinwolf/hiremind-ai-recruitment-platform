@@ -40,6 +40,7 @@ app.use("/api/auth", rl.auth, require("./routes/auth"));
 app.use("/api/roles", require("./routes/roles"));
 app.use("/api/candidate", require("./routes/candidate"));
 app.use("/api/interview", rl.interview, require("./routes/interview"));
+app.use("/api/behavior-assessment", rl.interview, require("./routes/behaviorAssessment"));
 app.use("/api/hr", require("./routes/hr"));
 app.use("/api/admin", require("./routes/admin"));
 app.use("/api/analytics", require("./routes/analytics"));

@@ -9,6 +9,7 @@ import UploadResume from "./pages/UploadResume.jsx";
 import ATSResult from "./pages/ATSResult.jsx";
 import Interview from "./pages/Interview/Interview.jsx";
 import InterviewComplete from "./pages/Interview/InterviewComplete.jsx";
+import BehaviorAssessment from "./pages/BehaviorAssessment/BehaviorAssessment.jsx";
 import Dashboard from "./pages/Dashboard/Dashboard.jsx";
 import HRDashboard from "./pages/HR/HRDashboard.jsx";
 import HRAnalytics from "./pages/HR/HRAnalytics.jsx";
@@ -35,6 +36,7 @@ function Inner() {
         <Route path="/upload-resume" element={<UploadResume />} />
         <Route path="/ats-result"    element={<ATSResult />} />
         <Route path="/interview"     element={<Interview />} />
+        <Route path="/behavior-assessment" element={<BehaviorAssessment />} />
         <Route path="/interview/complete" element={<InterviewComplete />} />
 
         <Route path="/hr"            element={<Private roles={["hr","admin"]}><HRDashboard /></Private>} />

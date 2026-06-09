@@ -7,13 +7,13 @@ const { roundAverages, dimAvg } = require("./scoreAggregator");
 const { score: behaviorScore } = require("./behavioralWeights");
 const { detectRisks } = require("./riskDetector");
 
-function calcConfidence({ ats, rounds, behavior, practical, comm, riskCount, skipped }) {
-  const base = 0.30 * ats + 0.30 * rounds.technical + 0.20 * behavior + 0.10 * comm + 0.10 * practical;
+function calcConfidence({ ats, rounds, behavior, practical, comm, workplace, riskCount, skipped }) {
+  const base = 0.25 * ats + 0.25 * rounds.technical + 0.15 * behavior + 0.10 * comm + 0.10 * practical + 0.15 * (workplace || 0);
   const penalty = Math.min(25, riskCount * 8 + skipped * 4);
   return Math.max(0, Math.min(100, Math.round(base - penalty)));
 }
 
-async function buildBrief({ candidate, interview }) {
+async function buildBrief({ candidate, interview, assessment }) {
   const atsResult = { atsScore: candidate.atsScore, missingSkills: candidate.missingSkills };
   const behavior  = interview.psychIndicators?.behavioral;
   const rounds    = roundAverages(interview.questions);
@@ -33,6 +33,7 @@ async function buildBrief({ candidate, interview }) {
     behavior: behavior100,
     practical: practicalAvg,
     comm: commAvg,
+    workplace: assessment?.overallScore || interview.finalScores?.workplaceReadinessScore || 0,
     riskCount: risks.length,
     skipped,
   });

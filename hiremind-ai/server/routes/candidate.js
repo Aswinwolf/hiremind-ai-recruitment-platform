@@ -7,6 +7,7 @@ const auth = require("../middleware/auth");
 const upload = require("../middleware/upload");
 const Candidate = require("../models/Candidate");
 const Interview = require("../models/Interview");
+const Assessment = require("../models/Assessment");
 const Role = require("../models/Role");
 const { calculateATS } = require("../services/atsService");
 const { generateReport } = require("../services/reportService");
@@ -82,7 +83,8 @@ router.get("/report", auth, async (req, res) => {
     const candidate = await Candidate.findOne({ userId: req.user.id });
     const interview = await Interview.findOne({ userId: req.user.id, status: "completed" }).sort({ completedAt: -1 });
     if (!interview) return res.status(404).json({ message: "No completed interview found" });
-    const filePath = await generateReport(candidate, interview);
+    const assessment = await Assessment.findOne({ interviewId: interview._id, status: "completed" });
+    const filePath = await generateReport(candidate, interview, assessment);
     interview.reportPath = filePath; await interview.save();
     res.download(filePath, "HireMind_Report.pdf");
   } catch (e) {

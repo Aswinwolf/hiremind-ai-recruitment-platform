@@ -43,4 +43,14 @@ async function release(interviewId, holder) {
   if (cur && cur.holder === holder) mem.delete(interviewId);
 }
 
-module.exports = { acquire, renew, release };
+/** Claim lock for start/resume — overwrites stale holders (e.g. after browser refresh). */
+async function claim(interviewId, holder) {
+  if (redis) {
+    await redis.set(KEY(interviewId), holder, "EX", TTL_SEC);
+    return true;
+  }
+  mem.set(interviewId, { holder, expires: Date.now() + TTL_SEC * 1000 });
+  return true;
+}
+
+module.exports = { acquire, claim, renew, release };
