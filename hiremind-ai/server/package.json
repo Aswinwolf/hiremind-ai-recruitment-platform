@@ -9,7 +9,7 @@
     "seed:roles": "node scripts/seedRoles.js",
     "db:indexes": "node scripts/createIndexes.js",
     "lint": "eslint .",
-    "test": "echo \"no tests yet\" && exit 0"
+    "test": "python3 -m pytest tests/ -v"
   },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
